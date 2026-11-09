@@ -29,7 +29,12 @@ void drawFace(bool scared) {
 void setup() {
   Serial.begin(115200);
   ThingBot.begin();  // da goi Wire.begin()
-  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+
+  // oled.begin() chi bao loi khi thieu RAM, KHONG phat hien duoc man hinh chua cam.
+  // Vi vay hoi thu dia chi 0x3C tren bus I2C truoc.
+  Wire.beginTransmission(0x3C);
+  bool found = (Wire.endTransmission() == 0);
+  if (!found || !oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println("Khong tim thay OLED!");
     while (true) delay(1000);
   }

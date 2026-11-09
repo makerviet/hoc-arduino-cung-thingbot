@@ -52,6 +52,12 @@ oled.fillRect(1, 41, bar, 8, SSD1306_WHITE);
 drawFace(d < 20);
 ```
 
+> **Kiểm tra màn hình có được cắm không:** `oled.begin()` chỉ trả về `false` khi thiếu RAM. Nó **không** phát hiện được màn hình chưa cắm. Muốn biết chắc thì hỏi địa chỉ I2C trước:
+> ```cpp
+> Wire.beginTransmission(0x3C);
+> bool found = (Wire.endTransmission() == 0);   // 0 = co thiet bi tra loi
+> ```
+>
 > `ThingBot.begin()` đã gọi `Wire.begin()`, nên OLED và PCA9685 dùng chung bus I2C mà không cần làm gì thêm.
 > Font mặc định **không có dấu tiếng Việt**.
 > Màn **1.3" SH1106**: dùng thư viện *Adafruit SH110X* và lớp `Adafruit_SH1106G`.
